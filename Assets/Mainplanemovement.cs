@@ -1,15 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Mainplanemovement : MonoBehaviour
 {
 	
-	Renderer m_ObjectRenderer;
-	Renderer[] renderers;
-	bool isWrappingX = false;
-	bool isWrappingY = false;
-	Transform[] ghosts = new Transform[8];
+	GameObject[] ghosts = new GameObject[8];
 	Vector3 initialposition;
 	Quaternion rotation;
 	Vector3 screenBottomLeft;
@@ -17,24 +14,27 @@ public class Mainplanemovement : MonoBehaviour
 	float screenWidth;
 	float screenHeight;
 	public GameObject ghostPrefab; 
+	public GameObject enemyBullet; 
+	Renderer someObject;
+
 
 	
 	
     // Start is called before the first frame update
     void Start() {
 		
+		someObject = GetComponent<Renderer>();
+		
 		transform.localRotation = Quaternion.Slerp( transform.rotation, Quaternion.Euler(transform.rotation.x, transform.rotation.y, Random.Range(0f, 360f)), 0.5f );
 		
-		
-		renderers = GetComponentsInChildren<Renderer>();
 		var cam = Camera.main;
 		screenBottomLeft = cam.ViewportToWorldPoint(new Vector3(0, 0, transform.position.z));
 		screenTopRight = cam.ViewportToWorldPoint(new Vector3(1, 1, transform.position.z));
 		screenWidth = screenTopRight.x - screenBottomLeft.x;
 		screenHeight = screenTopRight.y - screenBottomLeft.y;
 		
-		initialposition = GameObject.Find("MAIN").transform.position;
-		rotation = GameObject.Find("MAIN").transform.rotation;
+		initialposition = gameObject.transform.position;
+		rotation = gameObject.transform.rotation;
 		
 		CreateGhostShips();
 
@@ -44,7 +44,7 @@ public class Mainplanemovement : MonoBehaviour
 	void CreateGhostShips() {
 
 		for (int i = 0; i < 8; i++) {
-			ghosts[i] = Instantiate(ghostPrefab).transform;
+			ghosts[i] = Instantiate(ghostPrefab);
 		}
 		
 		PositionGhostShips();
@@ -61,110 +61,106 @@ public class Mainplanemovement : MonoBehaviour
 
 		ghostPosition.x = transform.position.x + screenWidth;
 		ghostPosition.y = transform.position.y;
-		ghosts[0].position = ghostPosition;
+		ghosts[0].transform.position = ghostPosition;
 
 		// Bottom-right
 		ghostPosition.x = transform.position.x + screenWidth;
 		ghostPosition.y = transform.position.y - screenHeight;
-		ghosts[1].position = ghostPosition;
+		ghosts[1].transform.position = ghostPosition;
 
 		// Bottom
 		ghostPosition.x = transform.position.x;
 		ghostPosition.y = transform.position.y - screenHeight;
-		ghosts[2].position = ghostPosition;
+		ghosts[2].transform.position = ghostPosition;
 
 		// Bottom-left
 		ghostPosition.x = transform.position.x - screenWidth;
 		ghostPosition.y = transform.position.y - screenHeight;
-		ghosts[3].position = ghostPosition;
+		ghosts[3].transform.position = ghostPosition;
 
 		// Left
 		ghostPosition.x = transform.position.x - screenWidth;
 		ghostPosition.y = transform.position.y;
-		ghosts[4].position = ghostPosition;
+		ghosts[4].transform.position = ghostPosition;
 
 		// Top-left
 		ghostPosition.x = transform.position.x - screenWidth;
 		ghostPosition.y = transform.position.y + screenHeight;
-		ghosts[5].position = ghostPosition;
+		ghosts[5].transform.position = ghostPosition;
 
 		// Top
 		ghostPosition.x = transform.position.x;
 		ghostPosition.y = transform.position.y + screenHeight;
-		ghosts[6].position = ghostPosition;
+		ghosts[6].transform.position = ghostPosition;
 
 		// Top-right
 		ghostPosition.x = transform.position.x + screenWidth;
 		ghostPosition.y = transform.position.y + screenHeight;
-		ghosts[7].position = ghostPosition;
+		ghosts[7].transform.position = ghostPosition;
 
 		// All ghost ships should have the same rotation as the main ship
 		for(int i = 0; i < 8; i++) {
-			ghosts[i].rotation = transform.rotation;
+			ghosts[i].transform.rotation = transform.rotation;
 		}
 
-	}
-
-
-	bool CheckRenderers() {
-		foreach(var renderer in renderers) {
-			// If at least one render is visible, return true
-			if(renderer.isVisible) {
-				return true;
-			}
-		}
-		// Otherwise, the object is invisible
-		return false;
 	}
 	
-	void ScreenWrap() {
-
-		var isVisible = CheckRenderers();
-		if(isVisible) {
-			isWrappingX = false;
-			isWrappingY = false;
-			return;
+	
+	bool isOnScreen(GameObject obj) {
+		
+		Frustum f = Camera.main.GetFrustum();
+		if (f.TestBounds(someObject.bounds) == EFrustumIntersection.Inside) {
+			return true;
+		} else {
+			return false;
 		}
-
-		if(isWrappingX && isWrappingY) {
-			return;
-		}
-
-		var cam = Camera.main;
-		var viewportPosition = cam.WorldToViewportPoint(transform.position);
-		var newPosition = transform.position;
-		if (!isWrappingX && (viewportPosition.x > 1 || viewportPosition.x < 0)) {
-			newPosition.x = -newPosition.x;
-			isWrappingX = true;
-		}
-
-		if (!isWrappingY && (viewportPosition.y > 1 || viewportPosition.y < 0)) {
-			newPosition.y = -newPosition.y;
-			isWrappingY = true;
-		}
-
-		transform.position = newPosition;
 
 	}
+	
+	bool isMainOnScreen() {
+		Frustum f = Camera.main.GetFrustum();
+		if (f.TestBounds(someObject.bounds) == EFrustumIntersection.Inside) {
+			return true;
+		} else {
+			return false;
+			
+		}
+	}
+	
 	
 	void SwapShips() {
 
 		foreach(var ghost in ghosts) {
-			if (ghost.position.x < screenWidth && ghost.position.x > -screenWidth && ghost.position.y < screenHeight && ghost.position.y > -screenHeight) {
-				transform.position = ghost.position;
+			
+			someObject = ghost.GetComponent<Renderer>();
+
+			if (isOnScreen(ghost)) {
+				transform.position = ghost.transform.position;
+				PositionGhostShips();
+				someObject = GetComponent<Renderer>();
+				Debug.Log("swapped");
 				break;
 			}
+
 		}
 
-		PositionGhostShips();
+	}
+	
+	void OnCollisionEnter(Collision coll) {
+		GameObject collidedWith = coll.gameObject;
+			string newstring = enemyBullet.name + "(Clone)";
+			if (coll.gameObject.name == newstring) {
+				Debug.Log("bullet hit");
+				Destroy(coll.gameObject);
+				SceneManager.LoadScene("flow");
+			}
+
 	}
 
-	
-
-
     // Update is called once per frame
-    void Update()
-    {
-        //ScreenWrap();
+    void Update() {
+        if (!isMainOnScreen()) {
+			SwapShips();
+		}
     }
 }

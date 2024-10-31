@@ -63,8 +63,11 @@
     <Analyzer Include="C:\Program Files\Unity\Hub\Editor\2022.3.44f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\PlaneShooting.cs" />
     <Compile Include="Assets\Mainplanemovement.cs" />
     <Compile Include="Assets\Planemovement.cs" />
+    <Compile Include="Assets\VisibilityTools.cs" />
+    <Compile Include="Assets\Bullet.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
