@@ -17,8 +17,6 @@ public class Planemovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-		
-
     }
 	
 
@@ -51,9 +49,7 @@ public class Planemovement : MonoBehaviour
 			transform.position = pos;
 			
 			if (Input.GetKey(KeyCode.LeftShift) && canShoot) {	
-				var bullet = Instantiate(bulletPrefab);
-				bullet.transform.position = transform.position;
-				bullet.transform.rotation = transform.rotation;
+				var bullet = Instantiate(bulletPrefab, transform.position, transform.rotation * Quaternion.Euler (0f, 0f, 90f));
 				canShoot = false;
 				Invoke("ResetCooldown", cooldown);
 			}
@@ -87,9 +83,7 @@ public class Planemovement : MonoBehaviour
 			
 			
 			if (Input.GetKey(KeyCode.RightShift) && canShoot) {	
-				var bullet = Instantiate(bulletPrefab);
-				bullet.transform.position = transform.position;
-				bullet.transform.rotation = transform.rotation;
+				var bullet = Instantiate(bulletPrefab, transform.position, transform.rotation * Quaternion.Euler (0f, 0f, 90f));
 				canShoot = false;
 				Invoke("ResetCooldown", cooldown);
 			}

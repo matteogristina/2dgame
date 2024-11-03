@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 3166673400882888257}
   - component: {fileID: 1541194465194834888}
   - component: {fileID: -7148197320215310046}
-  - component: {fileID: 2374792889568074430}
+  - component: {fileID: -4814484155130197670}
   - component: {fileID: 3370708555891867609}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: bullet
   m_TagString: bullet
   m_Icon: {fileID: 0}
@@ -31,8 +31,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -43,7 +43,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5828177992645727816}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 4300000, guid: 40ef98e103c383440b8db4bf4a650469, type: 3}
 --- !u!23 &1541194465194834888
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -96,7 +96,7 @@ Rigidbody:
   serializedVersion: 4
   m_Mass: 1
   m_Drag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -111,10 +111,10 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 80
   m_CollisionDetection: 0
---- !u!135 &2374792889568074430
-SphereCollider:
+--- !u!136 &-4814484155130197670
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -123,7 +123,7 @@ SphereCollider:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -131,9 +131,11 @@ SphereCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
+  serializedVersion: 2
+  m_Radius: 0.85
+  m_Height: 8.75
+  m_Direction: 1
+  m_Center: {x: -0.00000023841858, y: 0.40838826, z: 0.00000029802322}
 --- !u!114 &3370708555891867609
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -146,3 +148,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35d5862ec43ae4944998f9a05a6ebdb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  exp1: {fileID: 1007127540951276732, guid: 68eeaf780d7cdce4cb4c59301db05afd, type: 3}
+  exp2: {fileID: 1620140131458704099, guid: 2bd892f212162c34e9b04f439129cd96, type: 3}
+  exp3: {fileID: 560014183069458990, guid: 4495ae40d5e627a4d8b350752b76b2e1, type: 3}

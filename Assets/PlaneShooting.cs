@@ -24,9 +24,10 @@ public class PlaneShooting : MonoBehaviour
         Vector3 pos = transform.position;
 		
 		if (Input.GetKey(KeyCode.LeftControl) && canShoot) {	
-			var bullet = Instantiate(bulletPrefab);
-			bullet.transform.position = transform.position;
-			bullet.transform.rotation = transform.rotation;
+			var bullet = Instantiate(bulletPrefab, transform.position, transform.rotation * Quaternion.Euler (180f, 0f, 0f));
+			Debug.Log("rotation: " + transform.rotation * Quaternion.Euler (180f, 0f, 0f));
+			//bullet.transform.position = transform.position;
+			//bullet.transform.rotation = transform.rotation * Quaternion.Euler(90, 0, 0);
 			canShoot = false;
 			Invoke("ResetCooldown", 0.3f);
 		}

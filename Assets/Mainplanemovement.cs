@@ -16,7 +16,11 @@ public class Mainplanemovement : MonoBehaviour
 	public GameObject ghostPrefab; 
 	public GameObject enemyBullet; 
 	Renderer someObject;
-
+	
+	
+	public GameObject exp1;
+	public GameObject exp2;
+	public GameObject exp3;
 
 	
 	
@@ -127,7 +131,6 @@ public class Mainplanemovement : MonoBehaviour
 		}
 	}
 	
-	
 	void SwapShips() {
 
 		foreach(var ghost in ghosts) {
@@ -146,16 +149,6 @@ public class Mainplanemovement : MonoBehaviour
 
 	}
 	
-	void OnCollisionEnter(Collision coll) {
-		GameObject collidedWith = coll.gameObject;
-			string newstring = enemyBullet.name + "(Clone)";
-			if (coll.gameObject.name == newstring) {
-				Debug.Log("bullet hit");
-				Destroy(coll.gameObject);
-				SceneManager.LoadScene("flow");
-			}
-
-	}
 
     // Update is called once per frame
     void Update() {
