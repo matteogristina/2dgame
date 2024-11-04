@@ -13,6 +13,10 @@ public class Bullet : MonoBehaviour {
 	public GameObject exp2;
 	public GameObject exp3;
 	
+	[SerializeField] AudioClip[] launch;
+	[SerializeField] AudioClip[] sfxexplosions;
+	
+	AudioSource audioPlayer;
 	Renderer someObject;
 
 	void Awake() {
@@ -21,9 +25,17 @@ public class Bullet : MonoBehaviour {
 	
     // Start is called before the first frame update
     void Start() {
+		GameObject sfxobj = GameObject.Find("audioHolder");
+		audioPlayer = sfxobj.GetComponent<AudioSource>();
+		
+		AudioClip clip = launch[Random.Range(0, launch.Length)];
+		audioPlayer.PlayOneShot(clip, 0.05f);
+		
 		someObject = GetComponent<Renderer>();
 		GameObject scoreGO = GameObject.Find("ScoresText");
-		scoreCounter = scoreGO.GetComponent<Scores>();
+		if (scoreGO != null) {
+			scoreCounter = scoreGO.GetComponent<Scores>();
+		}
     }
 	
 	public void Explode() {
@@ -44,9 +56,16 @@ public class Bullet : MonoBehaviour {
 			break;
 
 		}
+		
+		if (isOnScreen(gameObject)) { 
+			AudioClip clip = sfxexplosions[Random.Range(0, sfxexplosions.Length)];
+			audioPlayer.PlayOneShot(clip);
+		}
 		Destroy(gameObject);
 		
 	}
+	
+	
 	
 	void OnCollisionEnter(Collision coll) {
 		if (isOnScreen(gameObject)) {
@@ -76,7 +95,7 @@ public class Bullet : MonoBehaviour {
 	bool isOnScreen(GameObject obj) {
 		
 		Frustum f = Camera.main.GetFrustum();
-		if (f.TestBounds(someObject.bounds) == EFrustumIntersection.Inside) {
+		if (f.TestBounds(someObject.bounds) != EFrustumIntersection.Outside) {
 			return true;
 		} else {
 			return false;

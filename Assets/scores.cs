@@ -18,10 +18,13 @@ public class Scores : MonoBehaviour
 	void Restart() {
 		Debug.Log("restarting");
 		SceneManager.LoadScene("flow");
+		//Destroy(gameObject);
 	}
 	
 	public void DelayRestart() {
-		Invoke("Restart", cooldown);
+		if ((MAINscore < 5) && (MAIN2score < 5)) {
+			Invoke("Restart", cooldown);
+		}
 	}
 	
 	
