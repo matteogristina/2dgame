@@ -14,6 +14,7 @@ public class mCamera : MonoBehaviour
 	
 	void Awake()
     {
+		// do not destroy the main camera on load, moves it so that the canvas can be attached the the camera at all times
         DontDestroyOnLoad(this);
 		
 		if (instance == null) {

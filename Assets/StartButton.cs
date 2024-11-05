@@ -13,6 +13,8 @@ public class StartButton : MonoBehaviour
 		btn.onClick.AddListener(TaskOnClick);
     }
 	
+	
+	// coding the play button in main menu
 	void TaskOnClick(){
 		SceneManager.LoadScene("flow");
 	}

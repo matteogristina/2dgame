@@ -19,34 +19,36 @@ public class Planemovement : MonoBehaviour
     {
     }
 	
+	
+	
 
     // Update is called once per frame
     void Update()
     {
         Vector3 pos = transform.position;
-		if (isMain) {
+									// if this game object is player1 (MAIN) or a clone of player1
+		if (isMain) {				// move the plane and SMOOTHLY rotate in the direction it is moving
 			if (Input.GetKey("w")) {
 				pos.y += speed * Time.deltaTime;
-				//transform.rotation = Quaternion.Euler(transform.rotation.x, transform.rotation.y, 180f);
 				transform.localRotation = Quaternion.Slerp( transform.rotation, Quaternion.Euler(transform.rotation.x, transform.rotation.y, -90f), speed*Time.deltaTime );
 			}
 			if (Input.GetKey("s")) {
 				pos.y -= speed * Time.deltaTime;
-				//transform.rotation = Quaternion.Euler(transform.rotation.x, transform.rotation.y, 0f);
 				transform.localRotation = Quaternion.Slerp( transform.rotation, Quaternion.Euler(transform.rotation.x, transform.rotation.y, 90f), speed*Time.deltaTime );
 			}
 			if (Input.GetKey("d")) {
 				pos.x += speed * Time.deltaTime;
-				//transform.rotation = Quaternion.Euler(transform.rotation.x, transform.rotation.y, 90f);
 				transform.localRotation = Quaternion.Slerp( transform.rotation, Quaternion.Euler(transform.rotation.x, transform.rotation.y, 180f), speed*Time.deltaTime );
 			}
 			if (Input.GetKey("a")) {
 				pos.x -= speed * Time.deltaTime;
-				//transform.rotation = Quaternion.Euler(transform.rotation.x, transform.rotation.y, 270f);
 				transform.localRotation = Quaternion.Slerp( transform.rotation, Quaternion.Euler(transform.rotation.x, transform.rotation.y, 0f), speed*Time.deltaTime );
 			}
 			
 			transform.position = pos;
+			
+			// left shift is bound to shoot
+			// creates a bullet and starts cooldown
 			
 			if (Input.GetKey(KeyCode.LeftShift) && canShoot) {	
 				var bullet = Instantiate(bulletPrefab, transform.position, transform.rotation * Quaternion.Euler (0f, 0f, 90f));
@@ -54,12 +56,10 @@ public class Planemovement : MonoBehaviour
 				Invoke("ResetCooldown", cooldown);
 			}
 			
-			
-			
-		} else {
+		} else { 			// this plane is player2 (MAIN2) or a clone of player 2
+							// use IJKL to move
 			if (Input.GetKey("i")) {
 				pos.y += speed * Time.deltaTime;
-				//transform.rotation = Quaternion.Euler(transform.rotation.x, transform.rotation.y, 180f);
 				transform.localRotation = Quaternion.Slerp( transform.rotation, Quaternion.Euler(transform.rotation.x, transform.rotation.y, -90f), speed*Time.deltaTime );
 			}
 			if (Input.GetKey("k")) {
@@ -80,8 +80,7 @@ public class Planemovement : MonoBehaviour
 			
 			transform.position = pos;
 			
-			
-			
+			// right shift shoots a bullet game object and starts cooldown
 			if (Input.GetKey(KeyCode.RightShift) && canShoot) {	
 				var bullet = Instantiate(bulletPrefab, transform.position, transform.rotation * Quaternion.Euler (0f, 0f, 90f));
 				canShoot = false;
@@ -89,9 +88,6 @@ public class Planemovement : MonoBehaviour
 			}
 			
 		}
-		
-		
-		//more space in update method
 		
     }
 	

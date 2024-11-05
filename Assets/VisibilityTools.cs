@@ -1,4 +1,6 @@
 // VisibilityTools.cs
+// detect if a game object is off screen, from this thread
+// https://discussions.unity.com/t/onbecameinvisible-in-the-editor/190125/3
     using UnityEngine;
     
     public enum EFrustumIntersection

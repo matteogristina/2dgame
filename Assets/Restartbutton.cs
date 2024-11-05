@@ -13,6 +13,7 @@ public class Restartbutton : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+		// add listener to click
 		Button btn = GetComponent<Button>();
 		btn.onClick.AddListener(TaskOnClick);
 		
@@ -28,7 +29,8 @@ public class Restartbutton : MonoBehaviour
         
     }
 	
-	void TaskOnClick(){
+	// when the button is clicked, kill all buttons, and restart the game b running flow scene
+	void TaskOnClick() {
 		Debug.Log ("clicked");
 		Debug.Log("restarting");
 		scoreCounter.MAINscore = 0;

@@ -20,12 +20,12 @@ public class ScorePreserve : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+		// assign main camera as the canvas
 		GameObject camera = GameObject.Find("Main Camera");
-		
 		Canvas canvas = this.GetComponent<Canvas>();
-		
-		
 		canvas.worldCamera = camera.GetComponent<Camera>(); 
+		
+		
 		gameOver = false;
 		restartpressed = false;
         scoreGO = GameObject.Find("ScoresText");
@@ -38,7 +38,7 @@ public class ScorePreserve : MonoBehaviour
 	
 	void Awake()
     {
-        DontDestroyOnLoad(this);
+        DontDestroyOnLoad(this);		// we want the scores to preserve instead of resetting to 0 - 0 every time
 		
 		if (instance == null) {
 			instance = this;
@@ -47,6 +47,7 @@ public class ScorePreserve : MonoBehaviour
 		}
     }
 	
+	// method that creates restart, main menu, and quit buttons when a bullet hits a plane
 	void CreateRestart() {
 		if(!GameObject.Find ("Restart Game")) {
 			Debug.Log("in create restart");
@@ -59,11 +60,9 @@ public class ScorePreserve : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-		
-		GameObject rstbtn = GameObject.Find("Restart Game");
-		
-		
 		if (!gameOver) {
+			// if the score is equal to or over 5, start the sequence to end the game
+			// create buttons that can navigate to the main menu, restart game, quit
 			if ((scoreCounter.MAINscore >= 5) || (scoreCounter.MAIN2score >= 5)) {
 				Debug.Log("game should end");
 				gameOver = true;

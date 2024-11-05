@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+// limits the fps of the game for consistent frame times
 public class fpslimit : MonoBehaviour
 {
     // Start is called before the first frame update

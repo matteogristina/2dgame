@@ -13,6 +13,8 @@ public class BacktoMM : MonoBehaviour
 		btn.onClick.AddListener(TaskOnClick);
     }
 	
+	
+	// coding the main menu button in restart menu
 	void TaskOnClick(){
 		SceneManager.LoadScene("mainmenu");
 	}

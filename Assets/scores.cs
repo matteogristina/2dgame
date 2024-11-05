@@ -5,6 +5,9 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
 
+// this script sets the text with multiple colors in the same text object, avoid needing to split into multiple game objects
+
+
 public class Scores : MonoBehaviour
 {
 	[Header("Dynamic")]
@@ -32,14 +35,12 @@ public class Scores : MonoBehaviour
     void Start()
     {
 		uiText = GetComponent<TextMeshProUGUI>();
-		//string joined = string.Format(TEXT_BASE, MAINscore, MAIN2score);
-		//uiText.text = joined;
-        //uiText.text = "Some text";
     }
 
     // Update is called once per frame
     void Update()
     {
+		// join the text with the correct color formatting
         string joined = string.Format(TEXT_BASE, MAINscore, MAIN2score);
 		uiText.text = joined;
     }

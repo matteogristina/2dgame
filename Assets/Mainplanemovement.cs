@@ -22,13 +22,16 @@ public class Mainplanemovement : MonoBehaviour
 	public GameObject exp2;
 	public GameObject exp3;
 
-	
+	// the two planes on screen have this code attached
+	// we create ghosts in 8 direcetions around the main "on screen" planes to implement the overflowing/teleporting ot the other side of the screen
 	
     // Start is called before the first frame update
     void Start() {
 		
 		someObject = GetComponent<Renderer>();
 		
+		
+		//face the plane in a random direction on scene start
 		transform.localRotation = Quaternion.Slerp( transform.rotation, Quaternion.Euler(transform.rotation.x, transform.rotation.y, Random.Range(0f, 360f)), 0.5f );
 		
 		var cam = Camera.main;
@@ -44,7 +47,7 @@ public class Mainplanemovement : MonoBehaviour
 
 	}
 		
-		
+	// creates 8 ghost ships around the main ship on screen
 	void CreateGhostShips() {
 
 		for (int i = 0; i < 8; i++) {
@@ -55,6 +58,8 @@ public class Mainplanemovement : MonoBehaviour
 
 	}
 	
+	
+	//move the ships to the proper locations around the screen
 	void PositionGhostShips() {
 
 		// All ghost positions will be relative to the ships (this) transform,
@@ -109,7 +114,7 @@ public class Mainplanemovement : MonoBehaviour
 
 	}
 	
-	
+	// returns true if passed object on screen, false if not
 	bool isOnScreen(GameObject obj) {
 		
 		Frustum f = Camera.main.GetFrustum();
@@ -121,6 +126,7 @@ public class Mainplanemovement : MonoBehaviour
 
 	}
 	
+	// returns true if main plane (this) is on screen, false if not
 	bool isMainOnScreen() {
 		Frustum f = Camera.main.GetFrustum();
 		if (f.TestBounds(someObject.bounds) == EFrustumIntersection.Inside) {
@@ -131,6 +137,8 @@ public class Mainplanemovement : MonoBehaviour
 		}
 	}
 	
+	
+	// once a ghost ship enters the screen, we need to move the main (center) ship into that ghosts position
 	void SwapShips() {
 
 		foreach(var ghost in ghosts) {
@@ -152,6 +160,7 @@ public class Mainplanemovement : MonoBehaviour
 
     // Update is called once per frame
     void Update() {
+		//check if we need to swap ghost with main
         if (!isMainOnScreen()) {
 			SwapShips();
 		}

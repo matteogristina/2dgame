@@ -19,18 +19,23 @@ public class Bullet : MonoBehaviour {
 	AudioSource audioPlayer;
 	Renderer someObject;
 
+
+	// if a bullet is spawned, it either hits another object or it expires
 	void Awake() {
 	  startTime = Time.time;
 	}
 	
     // Start is called before the first frame update
     void Start() {
+		// prime the audio object
 		GameObject sfxobj = GameObject.Find("audioHolder");
 		audioPlayer = sfxobj.GetComponent<AudioSource>();
-		
+
+		// when bullet is created, play the launch sound
 		AudioClip clip = launch[Random.Range(0, launch.Length)];
 		audioPlayer.PlayOneShot(clip, 0.05f);
 		
+		// fetch scores object, if we need to update scores we use scoreGO
 		someObject = GetComponent<Renderer>();
 		GameObject scoreGO = GameObject.Find("ScoresText");
 		if (scoreGO != null) {
@@ -41,7 +46,7 @@ public class Bullet : MonoBehaviour {
 	public void Explode() {
 		
 		var randomNumber = Random.Range (0, 3);
-
+		// pick one of three explosions to spawn
 		switch(randomNumber) {
 		  case 0:
 			Instantiate(exp1, transform.position, transform.rotation);
@@ -57,16 +62,18 @@ public class Bullet : MonoBehaviour {
 
 		}
 		
+		// pick one of three explosion sounds to play
 		if (isOnScreen(gameObject)) { 
 			AudioClip clip = sfxexplosions[Random.Range(0, sfxexplosions.Length)];
 			audioPlayer.PlayOneShot(clip);
 		}
+		// kill the bullet game object
 		Destroy(gameObject);
 		
 	}
 	
 	
-	
+	// when we collide with an object, we must explode the bullet, if we collide with a plane, we need to increment the score and restart the scene
 	void OnCollisionEnter(Collision coll) {
 		if (isOnScreen(gameObject)) {
 			GameObject collidedWith = coll.gameObject;
@@ -76,13 +83,15 @@ public class Bullet : MonoBehaviour {
 					if (coll.gameObject.name == "MAIN2") {
 						Debug.Log("point to p2 (black)");
 						scoreCounter.MAINscore += 1;
-					} else {
+						scoreCounter.DelayRestart();
+					} else if (coll.gameObject.name == "MAIN") {
 						Debug.Log("point to p1 (white)");
 						scoreCounter.MAIN2score += 1;
+						scoreCounter.DelayRestart();
 					}
 					
 					Explode();
-					scoreCounter.DelayRestart();
+					//scoreCounter.DelayRestart();
 					
 		} else {
 			
@@ -91,7 +100,7 @@ public class Bullet : MonoBehaviour {
 		}
 	}
 	
-	
+	// check if the object is on screen
 	bool isOnScreen(GameObject obj) {
 		
 		Frustum f = Camera.main.GetFrustum();
@@ -108,11 +117,11 @@ public class Bullet : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-		
+		// after the bullet is spawned, it travels in the direction it was fired
 		transform.position += transform.up * Time.deltaTime * bulletSpeed;
 		
 		transform.rotation *= Quaternion.Euler (0f, 2f, 0f);
-		
+		// will expire after 1.4f
 		if ((Time.time - startTime) > 1.4f) {
 			Explode();
 		}
